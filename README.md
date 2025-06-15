@@ -1,4 +1,4 @@
-# 💅 Unhas Pop - Estúdio
+# 💅 Unhas Pop!
 
 Um site moderno com acessibilidade para agendamento de serviços de manicure e pedicure.
 
