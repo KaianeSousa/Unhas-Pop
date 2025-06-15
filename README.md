@@ -4,7 +4,7 @@ Um site moderno com acessibilidade para agendamento de serviços de manicure e p
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 - **HTML5**
 - **CSS3**
@@ -19,6 +19,7 @@ Um site moderno com acessibilidade para agendamento de serviços de manicure e p
 - **Tipografia**: Utilização das fontes sem serifa Lexend e Open Sans, em conjunto com efeito negrito. Lexend é uma fonte projetada para reduzir o estresse visual e otimizar a interpretação, principalmente para pessoas com dislexia. Já Open Sans foi usada como um complemento a anterior, de maneira a destacar a mensagem personalizada de boas-vindas do restante do site.
 - **Grid e Layout**: Utilização do sistema de grid do Bootstrap para organização e responsividade dos elementos, de maneira a permitir que funcionem em diferentes telas.
 - **Cores**: Paleta em tons de rosa e roxo escuro, variando entre os temas claro e escuro.
+  
      ### 🌞 Tema Claro
 
     | Elemento                       | Cor                                 | HEX       |
@@ -106,7 +107,7 @@ Um site moderno com acessibilidade para agendamento de serviços de manicure e p
 
 ---
 
-## Trechos do script JS:
+## 📄 Trechos do script JS:
 
 ### ✅ Acessibilidade
 ```js
