@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     el.style.display = 'none';
   });
 
-  // Mensagem de boas-vindas
+  // Mensagem de boas-vindas baseada no horário
   function mensagem() {
     const hora = new Date().getHours();
     let mensagem = '';
@@ -64,108 +64,126 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Configuração do formulário
-  function formulario() {
-  const form = document.getElementById('scheduling');
-  if (!form) return;
-  
+  // Configuração do formulário de agendamento
+  function configurarFormulario() {
+    const form = document.getElementById('form-scheduling'); // Corrigido para match com HTML
+    if (!form) return;
+    
+    form.setAttribute('action', 'processa-formulario.php');
+    form.setAttribute('method', 'POST');
 
-  form.setAttribute('action', 'processa-formulario.php');
-  form.setAttribute('method', 'POST');
+    const servicoSelect = document.getElementById('servico');
+    const todasSecoes = document.querySelectorAll('[id^="details-"]');
+    const telefoneInput = document.getElementById('numero');
 
-  const servicoSelect = document.getElementById('servico');
-  const todasSecoes = document.querySelectorAll('[id^="details-"]');
-  const telefoneInput = document.getElementById('numero'); 
+    if (telefoneInput) {
+      telefoneInput.addEventListener('input', function(e) {
+        let valor = this.value.replace(/\D/g, '');
+        if (valor.length > 2) {
+          valor = `(${valor.substring(0, 2)}) ${valor.substring(2, 6)}${valor.length > 6 ? '-' + valor.substring(6, 11) : ''}`;
+        } else if (valor.length > 0) {
+          valor = `(${valor}`;
+        }
+        this.value = valor;
+      });
 
+      telefoneInput.addEventListener('blur', function() {
+        const numeros = this.value.replace(/\D/g, '');
+        if (numeros.length < 10 || numeros.length > 11) {
+          this.classList.add('is-invalid');
+        } else {
+          this.classList.remove('is-invalid');
+        }
+      });
+    }
 
-  if (telefoneInput) {
-    telefoneInput.addEventListener('input', function(e) {
+    // Mostra seções baseadas no serviço selecionado
+    if (servicoSelect) {
+      servicoSelect.addEventListener('change', function() {
+        todasSecoes.forEach(sec => sec.classList.add('d-none'));
+        
+        if (this.value) {
+          const secaoAtiva = document.getElementById(`details-${this.value}`);
+          if (secaoAtiva) {
+            secaoAtiva.classList.remove('d-none');
+            secaoAtiva.style.opacity = '0';
+            secaoAtiva.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => secaoAtiva.style.opacity = '1', 10);
+          }
+        }
+      });
+    }
 
-      let valor = this.value.replace(/\D/g, '');
-      if (valor.length > 2) {
-        valor = `(${valor.substring(0, 2)}) ${valor.substring(2, 6)}${valor.length > 6 ? '-' + valor.substring(6, 11) : ''}`;
-      } else if (valor.length > 0) {
-        valor = `(${valor}`;
-      }
-      this.value = valor;
+    form.querySelectorAll('input, select').forEach(input => {
+      input.addEventListener('input', function() {
+        this.classList.remove('is-invalid');
+      });
     });
 
-    telefoneInput.addEventListener('blur', function() {
-      const numeros = this.value.replace(/\D/g, '');
-      if (numeros.length < 10 || numeros.length > 11) {
-        this.classList.add('is-invalid');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      let isValid = true;
+      
+      const telefone = form.querySelector('#numero');
+      if (telefone) {
+        const numerosTelefone = telefone.value.replace(/\D/g, '');
+        if (numerosTelefone.length < 10 || numerosTelefone.length > 11) {
+          telefone.classList.add('is-invalid');
+          isValid = false;
+        }
+      }
+
+      form.querySelectorAll('[required]').forEach(input => {
+        if (!input.value.trim()) {
+          input.classList.add('is-invalid');
+          isValid = false;
+        }
+      });
+
+      if (isValid) {
+
+        const alertaSucesso = document.createElement('div');
+        alertaSucesso.className = 'alert alert-success mt-3';
+        alertaSucesso.innerHTML = `
+          <i class="fas fa-check-circle me-2"></i>
+          Agendamento realizado! Entraremos em contato para confirmação.
+        `;
+        form.appendChild(alertaSucesso);
+        
+        setTimeout(() => alertaSucesso.scrollIntoView({ behavior: 'smooth' }), 100);
+        setTimeout(() => {
+          alertaSucesso.remove();
+          form.reset();
+          todasSecoes.forEach(sec => sec.classList.add('d-none'));
+        }, 5000);
       } else {
-        this.classList.remove('is-invalid');
+        const primeiroInvalido = form.querySelector('.is-invalid');
+        if (primeiroInvalido) {
+          primeiroInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          primeiroInvalido.focus();
+        }
+      }
+    });
+
+      const btnLimpar = document.getElementById('cleanForm');
+      if (btnLimpar) {
+        btnLimpar.addEventListener('click', function() {
+          form.reset();
+          todasSecoes.forEach(sec => sec.classList.add('d-none'));
+          
+          form.querySelectorAll('.is-invalid').forEach(el => {
+            el.classList.remove('is-invalid');
+          });
+          
+          const alertaSucesso = form.querySelector('.alert-success');
+          if (alertaSucesso) {
+            alertaSucesso.remove();
       }
     });
   }
-
-  servicoSelect.addEventListener('change', function() {
-    todasSecoes.forEach(sec => sec.classList.add('d-none'));
-    
-    if (this.value) {
-      const secaoAtiva = document.getElementById(`details-${this.value}`);
-      if (secaoAtiva) {
-        secaoAtiva.classList.remove('d-none');
-        secaoAtiva.style.opacity = '0';
-        secaoAtiva.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => secaoAtiva.style.opacity = '1', 10);
-      }
-    }
-  });
-
-  form.querySelectorAll('input, select').forEach(input => {
-    input.addEventListener('input', function() {
-      this.classList.remove('is-invalid');
-    });
-  });
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    let isValid = true;
-    
-    const telefone = form.querySelector('#numero');
-    if (telefone) {
-      const numerosTelefone = telefone.value.replace(/\D/g, '');
-      if (numerosTelefone.length < 10 || numerosTelefone.length > 11) {
-        telefone.classList.add('is-invalid');
-        isValid = false;
-      }
-    }
-
-    form.querySelectorAll('[required]').forEach(input => {
-      if (!input.value.trim()) {
-        input.classList.add('is-invalid');
-        isValid = false;
-      }
-    });
-
-    if (isValid) {
-      const alertaSucesso = document.createElement('div');
-      alertaSucesso.className = 'alert alert-success mt-3';
-      alertaSucesso.innerHTML = `
-        <i class="fas fa-check-circle me-2"></i>
-        Agendamento realizado! Entraremos em contato para confirmação.
-      `;
-      form.appendChild(alertaSucesso);
-      
-      setTimeout(() => alertaSucesso.scrollIntoView({ behavior: 'smooth' }), 100);
-      setTimeout(() => {
-        alertaSucesso.remove();
-        form.reset();
-        todasSecoes.forEach(sec => sec.classList.add('d-none'));
-      }, 5000);
-    } else {
-      const primeiroInvalido = form.querySelector('.is-invalid');
-      if (primeiroInvalido) {
-        primeiroInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        primeiroInvalido.focus();
-      }
-    }
-  });
 }
 
-  // Toggle de tema
+  // Alterna os temas (claro/escuro)
   function configurarToggleTema() {
     const btnTema = document.getElementById('toggleTema');
     if (!btnTema) return;
@@ -187,9 +205,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Inicialização das funções
+  // Inicializa todas as funcionalidades
   mensagem();
   navegacaoAcessivel();
-  formulario();
+  configurarFormulario();
   configurarToggleTema();
 });

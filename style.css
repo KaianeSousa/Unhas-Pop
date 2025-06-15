@@ -19,7 +19,6 @@
   --background-color: #1a1a1a;
   --secondary-color: #ea6390;
   --highlight-color: #3a3a3a;
-  background-color: #121212;
   color: #ebebeb;
 }
 
@@ -32,6 +31,15 @@
 
 .tema-escuro .btn-enter, .tema-escuro .btn-scheduling {
   background-color:  #bd2a6a;
+}
+
+.tema-escuro .btn-clean {
+  background: #3a3a3a;
+  color: #ebebeb;
+}
+
+.tema-escuro .btn-clean:hover {
+  background: #4a4a4a;
 }
 
 .tema-escuro .form-box {
@@ -164,14 +172,21 @@ a {
   background: var(--primary-color);
   color: var(--light-text-color);
   border: none;
-  transition: 0.3s;
-  width: 100px;
-  height: 40px;
 }
 
 .btn-enter:hover, .btn-scheduling:hover {
   background: var(--secondary-color);
   color: var(--light-text-color);
+}
+
+.btn-clean {
+  background: var(--tertiary-color);
+  color: var(--text-color);
+  border: none;
+}
+
+.btn-clean:hover {
+  background: #d098a9;
 }
 
 footer {
