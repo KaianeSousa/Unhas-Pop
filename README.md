@@ -9,7 +9,7 @@ Um site moderno com acessibilidade para agendamento de serviços de manicure e p
 - **HTML5**
 - **CSS3**
 - **Bootstrap 5**
-- **JavaScript (ES6)**
+- **JavaScript**
 - **Font Awesome**
 
 ---
@@ -125,3 +125,8 @@ btnTema.addEventListener('click', function() {
 });
 
 ```
+---
+
+## ⚠️ Falhas
+
+- Falta informações dos valores de cada procedimento
