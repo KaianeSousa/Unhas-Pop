@@ -129,4 +129,4 @@ btnTema.addEventListener('click', function() {
 
 ## ⚠️ Falhas
 
-- Falta informações dos valores de cada procedimento
+- ???????????
