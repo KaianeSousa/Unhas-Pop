@@ -1,4 +1,4 @@
-// script.js
+
 document.documentElement.classList.add('js-enabled');
 
 document.addEventListener('DOMContentLoaded', function() {
