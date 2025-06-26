@@ -340,8 +340,6 @@ footer .icon:hover {
   box-shadow: none;
 }
 
-/* Removido o .navbar-toggler-icon pois agora usamos imagens */
-
 .tema-escuro .menu-light {
   display: none;
 }
