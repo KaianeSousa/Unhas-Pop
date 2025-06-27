@@ -129,4 +129,7 @@ btnTema.addEventListener('click', function() {
 
 ## ⚠️ Falhas
 
-- ???????????
+- Cores chamativas no tema escuro
+- fundo branco no formulário no tema escuro
+- logo no tema escuro
+- falta de indicadores de rolagem no formato responsivo
